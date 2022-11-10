@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
 import { RegisterDto, LoginDto } from './dto';
 import { UserDocument } from './user.model';
 import { AuthGuard } from './auth.guard';
-import { User } from './auth.decorator';
+import { User } from './decorators';
 
 @Controller('auth')
 export class AuthController {

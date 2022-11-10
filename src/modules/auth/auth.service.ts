@@ -66,7 +66,7 @@ export class AuthService {
       );
     }
 
-    const token = this._jwtService.sign({ userId: user.id });
+    const token = this._jwtService.sign({ userId: user.id, role: user.role });
 
     const updatedUser = await this._userModel.findByIdAndUpdate(
       user.id,

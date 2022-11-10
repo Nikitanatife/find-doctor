@@ -13,6 +13,7 @@ import {
   validationOptions,
   UserRoles,
 } from '../../../constants';
+import { IsSpecAllowed, IsSpecNotEmpty } from '../decorators';
 
 export class RegisterDto {
   @IsNotEmpty()
@@ -38,4 +39,8 @@ export class RegisterDto {
   @IsNotEmpty()
   @IsEnum(UserRoles)
   readonly role: string;
+
+  @IsSpecNotEmpty()
+  @IsSpecAllowed()
+  spec?: string;
 }

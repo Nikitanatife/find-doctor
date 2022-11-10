@@ -29,10 +29,13 @@ export class UserModel {
   password: string;
 
   @Prop({ required: false, trim: true })
-  token: string;
+  token?: string;
 
   @Prop({ required: true, enum: UserRoles })
   role: UserRoles;
+
+  @Prop({ required: false, trim: true })
+  spec?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserModel);
