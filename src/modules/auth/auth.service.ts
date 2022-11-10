@@ -7,9 +7,8 @@ import {
   NOT_VALID_CREDENTIALS,
   PHONE_EXIST,
 } from '../../constants';
-import { RegisterDto } from './dto';
+import { RegisterDto, LoginDto } from './dto';
 import { compare, genSalt, hash } from 'bcryptjs';
-import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -79,5 +78,9 @@ export class AuthService {
     const { password: omitPassword, ...userData } = updatedUser.toObject();
 
     return userData as UserDocument;
+  }
+
+  async logout(user: UserDocument): Promise<void> {
+    await this._userModel.findByIdAndUpdate(user.id, { token: null });
   }
 }
