@@ -55,6 +55,10 @@ class ConfigService {
 
     return options;
   }
+
+  getMongoDbConfig(): string {
+    return this.getValue('MONGO_URL');
+  }
 }
 
 const configService = new ConfigService(process.env);
