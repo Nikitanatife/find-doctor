@@ -1,6 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { modelNames, TIME_SLOT_CONFLICT } from '../../constants';
+import {
+  modelNames,
+  TIME_SLOT_CONFLICT,
+  TIME_SLOT_NOT_FOUND,
+} from '../../constants';
 import { Model } from 'mongoose';
 import { TimeSlotDocument } from './time-slot.model';
 import { UserDocument } from '../auth/user.model';
@@ -25,7 +29,7 @@ export class TimeSlotService {
     if (timeSlot) {
       throw new HttpException(
         { error: TIME_SLOT_CONFLICT },
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.CONFLICT,
       );
     }
 
@@ -38,5 +42,22 @@ export class TimeSlotService {
     });
 
     return createdTimeSlots;
+  }
+
+  async book(client: UserDocument, timeSlotId: string): Promise<void> {
+    const timeSlot = await this._timeSlotModel.findOneAndUpdate(
+      { _id: timeSlotId, client: { $exists: false } },
+      {
+        client: client.id,
+      },
+      { new: true },
+    );
+
+    if (!timeSlot) {
+      throw new HttpException(
+        { error: TIME_SLOT_NOT_FOUND },
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
 }
