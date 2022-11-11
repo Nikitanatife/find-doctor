@@ -24,7 +24,7 @@ export class TimeSlotController {
 
   @UseGuards(RoleGuard(UserRoles.DOCTOR))
   @UseGuards(AuthGuard)
-  @Post('/')
+  @Post()
   @HttpCode(HttpStatus.CREATED)
   async bulkCreate(
     @Body() body: CreateTimeSlotDto,

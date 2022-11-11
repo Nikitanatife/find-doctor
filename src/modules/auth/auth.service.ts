@@ -6,6 +6,7 @@ import {
   modelNames,
   NOT_VALID_CREDENTIALS,
   PHONE_EXIST,
+  UserRoles,
 } from '../../constants';
 import { RegisterDto, LoginDto } from './dto';
 import { compare, genSalt, hash } from 'bcryptjs';
@@ -18,6 +19,23 @@ export class AuthService {
     private readonly _userModel: Model<UserDocument>,
     private readonly _jwtService: JwtService,
   ) {}
+
+  async getDoctorList({ limit = 100, skip = 0 }): Promise<UserDocument[]> {
+    return this._userModel.aggregate([
+      { $match: { role: UserRoles.DOCTOR } },
+      {
+        $lookup: {
+          from: modelNames.timeSlot,
+          localField: 'timeSlots',
+          foreignField: '_id',
+          as: 'timeSlots',
+        },
+      },
+      { $project: { password: 0, token: 0 } },
+      { $skip: skip },
+      { $limit: limit },
+    ]);
+  }
 
   async register({
     password,
