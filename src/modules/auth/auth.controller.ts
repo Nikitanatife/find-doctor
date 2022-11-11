@@ -10,7 +10,7 @@ import {
 import { AuthService } from './auth.service';
 import { RegisterDto, LoginDto } from './dto';
 import { UserDocument } from './user.model';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guards';
 import { User } from './decorators';
 
 @Controller('auth')

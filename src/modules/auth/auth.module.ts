@@ -17,5 +17,6 @@ import { configService } from '../../config';
       signOptions: { expiresIn: configService.getJwtExpiration() },
     }),
   ],
+  exports: [JwtModule],
 })
 export class AuthModule {}

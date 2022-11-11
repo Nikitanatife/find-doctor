@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import {
   NOT_VALID_PASSWORD,
   NOT_VALID_PHONE_NUMBER,
@@ -7,6 +7,7 @@ import {
   PHONE_NUMBER_REG_EX,
 } from '../../constants';
 import { modelNames, UserRoles } from '../../constants';
+import { TimeSlotModel } from '../time-slot/time-slot.model';
 
 @Schema({ versionKey: false, collection: modelNames.user, timestamps: true })
 export class UserModel {
@@ -36,6 +37,12 @@ export class UserModel {
 
   @Prop({ required: false, trim: true })
   spec?: string;
+
+  @Prop({
+    type: [{ type: Types.ObjectId, ref: modelNames.timeSlot }],
+    required: false,
+  })
+  timeSlots?: TimeSlotModel[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserModel);

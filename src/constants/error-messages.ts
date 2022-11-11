@@ -7,3 +7,5 @@ export const NOT_VALID_CREDENTIALS = 'Not valid credentials';
 export const SPECIALIZATION_NOT_ALLOWED =
   'Specialization allowed only for doctors';
 export const SPECIALIZATION_REQUIRED = 'Specialization is required';
+export const UNAUTHORIZED = 'Unauthorized';
+export const TIME_SLOT_CONFLICT = 'Time slot already exist';
