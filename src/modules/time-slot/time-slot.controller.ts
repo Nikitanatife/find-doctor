@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
+  Param,
   Patch,
   Post,
   UseGuards,
@@ -14,6 +16,7 @@ import { AuthGuard, RoleGuard } from '../auth/guards';
 import { UserRoles } from '../../constants';
 import { User } from '../auth/decorators';
 import { UserDocument } from '../auth/user.model';
+import { IdParamDto } from '../../dto';
 
 @Controller('time-slot')
 export class TimeSlotController {
@@ -32,12 +35,24 @@ export class TimeSlotController {
 
   @UseGuards(RoleGuard(UserRoles.CLIENT))
   @UseGuards(AuthGuard)
-  @Patch('/update')
+  @Patch('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async update(
     @User() client: UserDocument,
+    @Param() params: IdParamDto,
     @Body() body: UpdateTimeSlotDto,
   ): Promise<void> {
-    return this._timeSlotService.update(client, body);
+    return this._timeSlotService.update(client, params.id, body);
+  }
+
+  @UseGuards(RoleGuard(UserRoles.DOCTOR))
+  @UseGuards(AuthGuard)
+  @Delete('/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async delete(
+    @Param() params: IdParamDto,
+    @User() doctor: UserDocument,
+  ): Promise<void> {
+    return this._timeSlotService.delete(doctor, params.id);
   }
 }

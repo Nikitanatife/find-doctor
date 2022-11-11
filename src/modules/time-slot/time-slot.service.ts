@@ -49,17 +49,18 @@ export class TimeSlotService {
 
   async update(
     client: UserDocument,
-    { timeSlotId, action }: UpdateTimeSlotDto,
+    id: string,
+    { action }: UpdateTimeSlotDto,
   ): Promise<void> {
     let filter, fieldsToUpdate;
 
     switch (action) {
       case UserActions.BOOK:
-        filter = { _id: timeSlotId, client: { $exists: false } };
+        filter = { id, client: { $exists: false } };
         fieldsToUpdate = { client: client.id };
         break;
       case UserActions.CANCEL:
-        filter = { _id: timeSlotId, client: client.id };
+        filter = { id, client: client.id };
         fieldsToUpdate = { $unset: { client: 1 } };
         break;
       default:
@@ -81,5 +82,27 @@ export class TimeSlotService {
         HttpStatus.NOT_FOUND,
       );
     }
+  }
+
+  async delete(doctor: UserDocument, id: string): Promise<void> {
+    const filter = {
+      id,
+      doctor: doctor.id,
+    };
+    const timeSlot = await this._timeSlotModel.findOne(filter);
+
+    if (!timeSlot) {
+      throw new HttpException(
+        { error: TIME_SLOT_NOT_FOUND },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    await Promise.all([
+      this._timeSlotModel.findOneAndDelete(filter),
+      this._userModel.findByIdAndUpdate(doctor.id, {
+        $pull: { timeSlots: id },
+      }),
+    ]);
   }
 }
