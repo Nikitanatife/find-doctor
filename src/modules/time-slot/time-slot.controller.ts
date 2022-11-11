@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { TimeSlotService } from './time-slot.service';
 import { TimeSlotDocument } from './time-slot.model';
-import { BookTimeSlotDto, CreateTimeSlotDto } from './dto';
+import { UpdateTimeSlotDto, CreateTimeSlotDto } from './dto';
 import { AuthGuard, RoleGuard } from '../auth/guards';
 import { UserRoles } from '../../constants';
 import { User } from '../auth/decorators';
@@ -32,12 +32,12 @@ export class TimeSlotController {
 
   @UseGuards(RoleGuard(UserRoles.CLIENT))
   @UseGuards(AuthGuard)
-  @Patch('/book')
+  @Patch('/update')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async book(
+  async update(
     @User() client: UserDocument,
-    @Body() body: BookTimeSlotDto,
+    @Body() body: UpdateTimeSlotDto,
   ): Promise<void> {
-    return this._timeSlotService.book(client, body.timeSlotId);
+    return this._timeSlotService.update(client, body);
   }
 }

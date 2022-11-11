@@ -10,3 +10,4 @@ export const SPECIALIZATION_REQUIRED = 'Specialization is required';
 export const UNAUTHORIZED = 'Unauthorized';
 export const TIME_SLOT_CONFLICT = 'Time slot already exist';
 export const TIME_SLOT_NOT_FOUND = 'Time slot not found';
+export const UNKNOWN_ACTION = 'Unknown action';

@@ -16,7 +16,6 @@ import {
 import { IsSpecAllowed, IsSpecNotEmpty } from '../decorators';
 
 export class RegisterDto {
-  @IsNotEmpty()
   @Length(
     validationOptions.minStringFieldLength,
     validationOptions.maxStringFieldLength,
@@ -24,20 +23,21 @@ export class RegisterDto {
   @Matches(USER_NAME_REG_EX, {
     message: NOT_VALID_NAME,
   })
+  @IsNotEmpty()
   readonly name: string;
 
   @IsPhoneNumber()
   @IsNotEmpty()
   readonly phone: string;
 
-  @IsNotEmpty()
   @Matches(PASSWORD_REG_EX, {
     message: NOT_VALID_PASSWORD,
   })
+  @IsNotEmpty()
   readonly password: string;
 
-  @IsNotEmpty()
   @IsEnum(UserRoles)
+  @IsNotEmpty()
   readonly role: string;
 
   @IsSpecNotEmpty()

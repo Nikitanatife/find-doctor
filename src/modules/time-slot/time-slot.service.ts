@@ -4,10 +4,13 @@ import {
   modelNames,
   TIME_SLOT_CONFLICT,
   TIME_SLOT_NOT_FOUND,
+  UNKNOWN_ACTION,
+  UserActions,
 } from '../../constants';
 import { Model } from 'mongoose';
 import { TimeSlotDocument } from './time-slot.model';
 import { UserDocument } from '../auth/user.model';
+import { UpdateTimeSlotDto } from './dto';
 
 @Injectable()
 export class TimeSlotService {
@@ -44,12 +47,31 @@ export class TimeSlotService {
     return createdTimeSlots;
   }
 
-  async book(client: UserDocument, timeSlotId: string): Promise<void> {
+  async update(
+    client: UserDocument,
+    { timeSlotId, action }: UpdateTimeSlotDto,
+  ): Promise<void> {
+    let filter, fieldsToUpdate;
+
+    switch (action) {
+      case UserActions.BOOK:
+        filter = { _id: timeSlotId, client: { $exists: false } };
+        fieldsToUpdate = { client: client.id };
+        break;
+      case UserActions.CANCEL:
+        filter = { _id: timeSlotId, client: client.id };
+        fieldsToUpdate = { $unset: { client: 1 } };
+        break;
+      default:
+        throw new HttpException(
+          { error: UNKNOWN_ACTION },
+          HttpStatus.BAD_REQUEST,
+        );
+    }
+
     const timeSlot = await this._timeSlotModel.findOneAndUpdate(
-      { _id: timeSlotId, client: { $exists: false } },
-      {
-        client: client.id,
-      },
+      filter,
+      fieldsToUpdate,
       { new: true },
     );
 
