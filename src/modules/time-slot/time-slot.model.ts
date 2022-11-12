@@ -17,6 +17,12 @@ export class TimeSlotModel {
 
   @Prop({ required: true })
   date: Date;
+
+  @Prop({ required: true, default: false })
+  isNotificationSentTomorrow: boolean;
+
+  @Prop({ required: true, default: false })
+  isNotificationSentToday: boolean;
 }
 
 export const TimeSlotSchema = SchemaFactory.createForClass(TimeSlotModel);

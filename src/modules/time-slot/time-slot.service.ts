@@ -7,10 +7,11 @@ import {
   UNKNOWN_ACTION,
   UserActions,
 } from '../../constants';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { TimeSlotDocument } from './time-slot.model';
 import { UserDocument } from '../auth/user.model';
 import { UpdateTimeSlotDto } from './dto';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class TimeSlotService {
@@ -37,7 +38,10 @@ export class TimeSlotService {
     }
 
     const createdTimeSlots = await this._timeSlotModel.create(
-      dates.map((date) => ({ date, doctor: doctor.id })),
+      dates.map((date) => ({
+        date: dayjs(date),
+        doctor: new Types.ObjectId(doctor.id),
+      })),
     );
 
     await this._userModel.findByIdAndUpdate(doctor.id, {

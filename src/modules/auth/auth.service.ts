@@ -42,6 +42,7 @@ export class AuthService {
     phone,
     name,
     role,
+    spec,
   }: RegisterDto): Promise<UserDocument> {
     const user = await this._userModel.findOne({ phone });
 
@@ -57,6 +58,7 @@ export class AuthService {
       password: passwordHash,
       name,
       role,
+      spec,
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

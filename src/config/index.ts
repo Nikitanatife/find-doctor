@@ -24,7 +24,7 @@ class ConfigService {
   }
 
   getPort(): number {
-    return +this.getValue('PORT', true) || 3000;
+    return +this.getValue('PORT', false) || 3000;
   }
 
   getJwtSecret(): string {
@@ -58,6 +58,14 @@ class ConfigService {
 
   getMongoDbConfig(): string {
     return this.getValue('MONGO_URL');
+  }
+
+  getNotificationTomorrowTimeout(): number {
+    return +this.getValue('NOTIFICATION_TOMORROW_TIMEOUT', false) || 60000;
+  }
+
+  getNotificationTodayTimeout(): number {
+    return +this.getValue('NOTIFICATION_TODAY_TIMEOUT', false) || 60000;
   }
 }
 
