@@ -1,11 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AuthModule } from '../src/modules/auth/auth.module';
 import { getModelToken } from '@nestjs/mongoose';
 import { modelNames, UserRoles } from '../src/constants';
 import { UserSchema } from '../src/modules/auth/user.model';
 import { model, Types } from 'mongoose';
+import { configService } from '../src/config';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -17,13 +18,12 @@ describe('AuthController (e2e)', () => {
   };
   const testUserData = {
     name: 'Test',
-    phone: '+380000000000',
+    phone: '+380973011034',
   };
   const testDoctorData = {
     ...testUserData,
     role: UserRoles.DOCTOR,
     spec: 'Psychiatrist',
-    timeSlots: [],
   };
   const baseOutput = {
     _id: expect.any(String),
@@ -49,7 +49,9 @@ describe('AuthController (e2e)', () => {
       .compile();
 
     app = moduleFixture.createNestApplication();
-    await app.init();
+    await app
+      .useGlobalPipes(new ValidationPipe(configService.getValidationOptions()))
+      .init();
   });
 
   it('/auth/register (POST)', () => {
@@ -65,6 +67,7 @@ describe('AuthController (e2e)', () => {
         expect(res.body).toEqual({
           ...testDoctorData,
           ...baseOutput,
+          timeSlots: expect.any(Array),
         });
       });
   });
