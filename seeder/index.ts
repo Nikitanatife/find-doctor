@@ -1,13 +1,12 @@
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
-import { modelNames, UserRoles } from '../src/constants';
+import { modelNames, TEST_PASSWORD, UserRoles } from '../src/constants';
 import { genSalt, hash } from 'bcryptjs';
 import * as dayjs from 'dayjs';
 import { UserSchema } from '../src/modules/auth/user.model';
 import { TimeSlotSchema } from '../src/modules/time-slot/time-slot.model';
 
 dotenv.config();
-const TEST_PASSWORD = '12345678Aa.';
 
 async function prefill(): Promise<void> {
   try {

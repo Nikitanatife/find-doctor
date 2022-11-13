@@ -27,8 +27,8 @@ export class TimeSlotController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async bulkCreate(
-    @Body() body: CreateTimeSlotDto,
     @User() doctor: UserDocument,
+    @Body() body: CreateTimeSlotDto,
   ): Promise<TimeSlotDocument[]> {
     return this._timeSlotService.bulkCreate(doctor, body.dates);
   }
