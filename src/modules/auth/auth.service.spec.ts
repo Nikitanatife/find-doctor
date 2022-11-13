@@ -64,7 +64,6 @@ describe('AuthService', () => {
       ...testDoctorData,
       password: '12345678aA.',
     });
-    console.log('doctor', doctor);
 
     expect(doctor).toEqual({
       ...testDoctorData,
