@@ -38,6 +38,10 @@ $ npm run prefill
 $ npm install
 ```
 
+## Notifications
+
+Reminder notifications can be found in `reminders.log` file in the project root folder in case of any.
+
 ## Running the app
 
 ```bash
