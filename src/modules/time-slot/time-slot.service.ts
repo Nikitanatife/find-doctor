@@ -7,7 +7,7 @@ import {
   UNKNOWN_ACTION,
   UserActions,
 } from '../../constants';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { TimeSlotDocument } from './time-slot.model';
 import { UserDocument } from '../auth/user.model';
 import { UpdateTimeSlotDto } from './dto';
@@ -40,11 +40,11 @@ export class TimeSlotService {
     const createdTimeSlots = await this._timeSlotModel.create(
       dates.map((date) => ({
         date: dayjs(date),
-        doctor: new Types.ObjectId(doctor.id),
+        doctor: doctor._id,
       })),
     );
 
-    await this._userModel.findByIdAndUpdate(doctor.id, {
+    await this._userModel.findByIdAndUpdate(doctor._id, {
       $addToSet: { timeSlots: createdTimeSlots.map((t) => t.id) },
     });
 
