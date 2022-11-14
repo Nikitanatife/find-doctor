@@ -14,8 +14,10 @@ import {
   UserRoles,
 } from '../../../constants';
 import { IsSpecAllowed, IsSpecNotEmpty } from '../decorators';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterDto {
+  @ApiProperty()
   @Length(
     validationOptions.minStringFieldLength,
     validationOptions.maxStringFieldLength,
@@ -26,20 +28,24 @@ export class RegisterDto {
   @IsNotEmpty()
   readonly name: string;
 
+  @ApiProperty()
   @IsPhoneNumber()
   @IsNotEmpty()
   readonly phone: string;
 
+  @ApiProperty()
   @Matches(PASSWORD_REG_EX, {
     message: NOT_VALID_PASSWORD,
   })
   @IsNotEmpty()
   readonly password: string;
 
+  @ApiProperty()
   @IsEnum(UserRoles)
   @IsNotEmpty()
   readonly role: string;
 
+  @ApiProperty({ required: false })
   @IsSpecNotEmpty()
   @IsSpecAllowed()
   spec?: string;

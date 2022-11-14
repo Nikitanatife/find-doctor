@@ -6,3 +6,4 @@ export * from './user-roles';
 export * from './user-actions';
 export * from './notification-types';
 export * from './test-data';
+export * from './base.model';
