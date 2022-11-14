@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
-import { modelNames, TEST_PASSWORD, UserRoles } from '../src/constants';
+import { modelNames, TEST_PASSWORD, UserRoles } from '../constants';
 import { genSalt, hash } from 'bcryptjs';
 import * as dayjs from 'dayjs';
-import { UserSchema } from '../src/modules/auth/user.model';
-import { TimeSlotSchema } from '../src/modules/time-slot/time-slot.model';
+import { UserSchema } from '../modules/auth/user.model';
+import { TimeSlotSchema } from '../modules/time-slot/time-slot.model';
 
 dotenv.config();
 
