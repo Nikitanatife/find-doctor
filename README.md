@@ -68,6 +68,14 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Docker
+
+```bash
+$ docker build -t <image_name>:1.0 .
+$ docker run --name <container_name> -p 5000:5000 <image_name>:1.0
+
+```
+
 ## License
 
 Nest is [MIT licensed](LICENSE).
